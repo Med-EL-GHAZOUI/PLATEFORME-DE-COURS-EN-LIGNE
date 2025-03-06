@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Quiz App</title>
+  <link rel="stylesheet" type="text/css" href="style2.css">
+</head>
+<body>
+  <div class="quiz-container">
+    <h1>Quiz JS</h1>
+    <div id="question-container">
+      <p id="question-text"></p>
+      <div id="answer-buttons"></div>
+    </div>
+    <div id="controls-container">
+      <button id="start-button">Start Quiz</button>
+      <div id="timer-container">
+        <span id="timer-text">Time Left: <span id="timer">0</span></span>
+      </div>
+      <a href="Développement Web.html"><button class="btn-read">retourne</button></a>
+    </div>
+  </div>
+  <script>
+    const quizQuestions = [
+    {
+      question: "1. Que retourne `typeof []` en JavaScript ?",
+      options: ["object", "array", "undefined","string"],
+      correctAnswer: "object"
+    },
+    {
+      question: "2. Comment declare-t-on une variable en ES6 ?",
+      options: ["var", "let", "const", "varlet"],
+      correctAnswer: "let"
+    },
+    {
+      question: "3. Quelle methode est utilisee pour ajouter un element à la fin d'un tableau ?",
+      options: ["push", "pop", "unshift", "Fappende"],
+      correctAnswer: "push"
+    },
+    {
+        question: "4. Que signifie NaN en JavaScript ?",
+        options: ["Not a Number", "Null and None", "No assigned Number", "Not a Null"],
+        correctAnswer: "Not a Number"
+    },
+    {
+        question: "5. Quelle est la sortie de `console.log(2 + '2')` ?",
+        options: ["22", "4", "erreur", "NaN"],
+        correctAnswer: "22"
+    },
+      {
+        question: "6. Quel mot-cle est utilise pour creer une fonction ?",
+        options: ["function", "def", "fun", "func"],
+        correctAnswer: "function"
+    },
+    {
+        question: "7. Quelle methode arrete une boucle en JavaScript ?",
+        options: ["break", "stop", "exit", "halt"],
+        correctAnswer: "break"
+    },
+    {
+        question: "8. Que signifie le mot-cle `this` dans une fonction ?",
+        options: ["L'objet appelant", "L'objet global", "La fonction elle-même", " Le contexte"],
+        correctAnswer: "L'objet appelant"
+    },
+    {
+        question: "9. Que signifie l'operateur `===` en JavaScript ?",
+        options: ["Comparaison stricte", "Comparaison abstraite", "Affectation", "Comparaison de type"],
+        correctAnswer: "Comparaison stricte"
+    },
+    {
+        question: "10. Quelle methode fusionne deux tableaux ?",
+        options: ["concat", "merge", "combine", "join"],
+        correctAnswer: "concat"
+      }
+  ];
+  // Variables to track quiz state
+  let currentQuestionIndex = 0;
+  let score = 0;
+  let timeLeft = 360;
+  let timerInterval;
+  // Function to start the quiz
+  function startQuiz() {
+    // Hide the start button and display the first question
+    document.getElementById("start-button").style.display = "none";
+    displayQuestion();
+    startTimer();
+  }
+  // Function to display a question and its options
+  function displayQuestion() {
+    const currentQuestion = quizQuestions[currentQuestionIndex];
+    const questionText = document.getElementById("question-text");
+    const answerButtons = document.getElementById("answer-buttons");
+    // Clear previous question and answer options
+    questionText.innerHTML = "";
+    answerButtons.innerHTML = "";
+    // Display the current question
+    questionText.innerHTML = currentQuestion.question;
+    // Create answer buttons for each option
+    currentQuestion.options.forEach(option => {
+      const button = document.createElement("button");
+      button.innerText = option;
+      button.classList.add("answer-button");
+      answerButtons.appendChild(button);
+      // Add click event listener to check the answer
+      button.addEventListener("click", function() {
+        checkAnswer(option);
+      });
+    });
+  }
+  // Function to check the selected answer
+  function checkAnswer(selectedOption) {
+    const currentQuestion = quizQuestions[currentQuestionIndex];
+    // Check if the selected answer is correct
+    if (selectedOption === currentQuestion.correctAnswer) {
+      score++;
+    }
+    // Move to the next question or end the quiz if all questions are answered
+    currentQuestionIndex++;
+    if (currentQuestionIndex < quizQuestions.length) {
+      displayQuestion();
+    } else {
+      endQuiz();
+    }
+  }
+  // Function to start the timer
+  function startTimer() {
+    timerInterval = setInterval(function() {
+      timeLeft--;
+      // Update the timer text
+      document.getElementById("timer").textContent = timeLeft;
+      // End the quiz if time runs out
+      if (timeLeft <= 0) {
+        endQuiz();
+      }
+    }, 1000);
+  }
+  // Function to end the quiz
+  function endQuiz() {
+    // Stop the timer
+    clearInterval(timerInterval);
+    // Calculate the score percentage
+    const scorePercentage = (score / quizQuestions.length) * 100;
+    // Display the final score
+    const questionContainer = document.getElementById("question-container");
+    questionContainer.innerHTML = `
+      <h2>Quiz Completed!</h2>
+      <p>Your Score: ${score} out of ${quizQuestions.length}</p>
+      <p>Score Percentage: ${scorePercentage}%</p>
+    `;
+  }
+  // Add event listener to start the quiz when the start button is clicked
+  document.getElementById("start-button").addEventListener("click", startQuiz);
+  </script>
+</body>
+</html>

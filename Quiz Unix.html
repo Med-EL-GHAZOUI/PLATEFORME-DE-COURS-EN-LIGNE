@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Quiz App</title>
+  <link rel="stylesheet" type="text/css" href="style2.css">
+</head>
+<body>
+  <div class="quiz-container">
+    <h1>Quiz Unix</h1>
+    <div id="question-container">
+      <p id="question-text"></p>
+      <div id="answer-buttons"></div>
+    </div>
+    <div id="controls-container">
+      <button id="start-button">Start Quiz</button>
+      <div id="timer-container">
+        <span id="timer-text">Time Left: <span id="timer">0</span></span>
+      </div>
+      <a href="Système d’exploitation.html"><button class="btn-read">retourne</button></a>
+    </div>
+  </div>
+  <script>
+    const quizQuestions = [
+    {
+      question: "1. Quelle commande permet de lister les fichiers d'un répertoire ?",
+      options: ["ls", "list", "dir","show"],
+      correctAnswer: "ls"
+    },
+    {
+      question: "2. Quelle commande affiche l'espace disque disponible ?",
+      options: ["df", "du", "free", "disk"],
+      correctAnswer: "df"
+    },
+    {
+      question: "3. Quel fichier contient les utilisateurs du système ?",
+      options: ["/etc/passwd", "/etc/shadow", "/etc/group", "/etc/users"],
+      correctAnswer: "/etc/passwd"
+    },
+    {
+        question: "4. Quelle commande est utilisée pour changer les permissions d'un fichier ?",
+        options: ["chmod", "chown", "chgrp", "perm"],
+        correctAnswer: "chmod"
+    },
+    {
+        question: "5. Quelle commande est utilisée pour rechercher un fichier dans le système ?",
+        options: ["find", "locate", "search", "lookup"],
+        correctAnswer: "find"
+    },
+      {
+        question: "6. Comment affiche-t-on les 10 dernières lignes d'un fichier texte ?",
+        options: ["head", "tail", "cat", "last"],
+        correctAnswer: "tail"
+    },
+    {
+        question: "7. Quelle commande est utilisée pour afficher les processus en cours ?",
+        options: ["ps", "top", "jobs", "proc"],
+        correctAnswer: "ps"
+    },
+    {
+        question: "8. Comment créer un nouveau fichier vide ?",
+        options: ["touch", "cat", "echo", " newfile"],
+        correctAnswer: "touch"
+    },
+    {
+        question: "9. Quelle commande permet de changer le propriétaire d'un fichier ?",
+        options: ["chown", "chmod", "chgrp", "owner"],
+        correctAnswer: "chown"
+    },
+    {
+        question: "10. Quel répertoire contient les fichiers de configuration système ?",
+        options: ["/etc", "/usr", "/bin", "/config"],
+        correctAnswer: "/etc"
+      }
+  ];
+  
+  // Variables to track quiz state
+  let currentQuestionIndex = 0;
+  let score = 0;
+  let timeLeft = 360;
+  let timerInterval;
+  
+  // Function to start the quiz
+  function startQuiz() {
+    // Hide the start button and display the first question
+    document.getElementById("start-button").style.display = "none";
+    displayQuestion();
+    startTimer();
+  }
+  
+  // Function to display a question and its options
+  function displayQuestion() {
+    const currentQuestion = quizQuestions[currentQuestionIndex];
+    const questionText = document.getElementById("question-text");
+    const answerButtons = document.getElementById("answer-buttons");
+  
+    // Clear previous question and answer options
+    questionText.innerHTML = "";
+    answerButtons.innerHTML = "";
+  
+    // Display the current question
+    questionText.innerHTML = currentQuestion.question;
+  
+    // Create answer buttons for each option
+    currentQuestion.options.forEach(option => {
+      const button = document.createElement("button");
+      button.innerText = option;
+      button.classList.add("answer-button");
+      answerButtons.appendChild(button);
+  
+      // Add click event listener to check the answer
+      button.addEventListener("click", function() {
+        checkAnswer(option);
+      });
+    });
+  }
+  
+  // Function to check the selected answer
+  function checkAnswer(selectedOption) {
+    const currentQuestion = quizQuestions[currentQuestionIndex];
+  
+    // Check if the selected answer is correct
+    if (selectedOption === currentQuestion.correctAnswer) {
+      score++;
+    }
+  
+    // Move to the next question or end the quiz if all questions are answered
+    currentQuestionIndex++;
+  
+    if (currentQuestionIndex < quizQuestions.length) {
+      displayQuestion();
+    } else {
+      endQuiz();
+    }
+  }
+  
+  // Function to start the timer
+  function startTimer() {
+    timerInterval = setInterval(function() {
+      timeLeft--;
+  
+      // Update the timer text
+      document.getElementById("timer").textContent = timeLeft;
+  
+      // End the quiz if time runs out
+      if (timeLeft <= 0) {
+        endQuiz();
+      }
+    }, 1000);
+  }
+  
+  // Function to end the quiz
+  function endQuiz() {
+    // Stop the timer
+    clearInterval(timerInterval);
+  
+    // Calculate the score percentage
+    const scorePercentage = (score / quizQuestions.length) * 100;
+  
+    // Display the final score
+    const questionContainer = document.getElementById("question-container");
+    questionContainer.innerHTML = `
+      <h2>Quiz Completed!</h2>
+      <p>Your Score: ${score} out of ${quizQuestions.length}</p>
+      <p>Score Percentage: ${scorePercentage}%</p>
+    `;
+  }
+  
+  // Add event listener to start the quiz when the start button is clicked
+  document.getElementById("start-button").addEventListener("click", startQuiz);
+  </script>
+</body>
+</html>
