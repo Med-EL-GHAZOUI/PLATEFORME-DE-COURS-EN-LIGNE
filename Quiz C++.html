@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Quiz App</title>
   <link rel="stylesheet" type="text/css" href="style2.css">
 </head>
+
 <body>
   <div class="quiz-container">
-    <h1>Quiz Unix</h1>
+    <h1>Quiz C++</h1>
     <div id="question-container">
       <p id="question-text"></p>
       <div id="answer-buttons"></div>
@@ -21,153 +23,154 @@
   </div>
   <script>
     const quizQuestions = [
-    {
-      question: "1. Quel est le fichier d'en-tête principal pour les entrées et sorties en C++ ?",
-      options: ["#include &lt;iostream&gt;", "#include &lt;stdio.h&gt;", "#include &lt;stdlib.h&gt;","#include &lt;iostream.h&gt;"],
-      correctAnswer: "#include &lt;iostream&gt;"
-    },
-    {
-      question: "2. Quelle est la sortie de <code> cout << Hello <<  World; </code> ?",
-      options: ["Hello World", "Hello", "World","Erreur"],
-      correctAnswer: "Hello World"
+      {
+        question: "1. Quel est le fichier d'en-tête principal pour les entrées et sorties en C++ ?",
+        options: ["#include &lt;iostream&gt;", "#include &lt;stdio.h&gt;", "#include &lt;stdlib.h&gt;", "#include &lt;iostream.h&gt;"],
+        correctAnswer: "#include &lt;iostream&gt;"
+      },
+      {
+        question: "2. Quelle est la sortie de <code> cout << Hello <<  World; </code> ?",
+        options: ["Hello World", "Hello", "World", "Erreur"],
+        correctAnswer: "Hello World"
 
-    },
-    {
-      question: "3. Quel mot-clé est utilisé pour déclarer une classe en C++ ?",
+      },
+      {
+        question: "3. Quel mot-clé est utilisé pour déclarer une classe en C++ ?",
         options: ["class", "struct", "public", "private"],
         correctAnswer: "class"
-    },
-    {
+      },
+      {
         question: "4. Que retourne l'expression <code>sizeof(int)</code> en C++ sur une architecture 32 bits ?",
         options: ["2", "4", "8", "16"],
         correctAnswer: "4"
-    },
-    {
+      },
+      {
         question: "5. Quelle est la différence entre <code>delete</code> et <code>delete[]</code> ?",
         options: ["delete est utilisé pour libérer la mémoire allouée dynamiquement, delete[] est utilisé pour libérer la mémoire allouée pour un tableau", "delete est utilisé pour libérer la mémoire allouée pour un tableau, delete[] est utilisé pour libérer la mémoire allouée dynamiquement", "Il n'y a pas de différence", "delete est utilisé pour libérer la mémoire allouée pour un tableau, delete[] est utilisé pour libérer la mémoire allouée pour un pointeur"],
         correctAnswer: "delete est utilisé pour libérer la mémoire allouée dynamiquement, delete[] est utilisé pour libérer la mémoire allouée pour un tableau"
-    },
+      },
       {
         question: "6. Quelle est la portée par défaut des membres d'une classe en C++ ?",
         options: ["public", "private", "protected", "friend"],
         correctAnswer: "private"
-    },
-    {
+      },
+      {
         question: "7. Quelle est la sortie de <code>cout << (3 > 2 ? Vrai : Faux);</code> ?",
         options: ["Vrai", "Faux", "1", "0"],
         correctAnswer: "Vrai"
-    },
-    {
+      },
+      {
         question: "8. Quelle est la méthode utilisée pour fermer un fichier en C++ ?",
         options: ["close()", "fclose()", "delete()", "remove()"],
         correctAnswer: "close()"
-    },
-    {
+      },
+      {
         question: "9. Que fait le mot-clé <code>this</code> en C++ ?",
         options: ["Référence à l'objet courant", "Référence à l'objet parent", "Référence à l'objet enfant", "Référence à l'objet statique"],
         correctAnswer: "Référence à l'objet courant"
-    },
-    {
+      },
+      {
         question: "10. Que retourne un constructeur en C++ ?",
         options: ["Rien", "Pointeur vers l'objet", "Référence à l'objet", "Adresse de l'objet"],
         correctAnswer: "Rien"
       }
-  ];
-  
-  // Variables to track quiz state
-  let currentQuestionIndex = 0;
-  let score = 0;
-  let timeLeft = 360;
-  let timerInterval;
-  
-  // Function to start the quiz
-  function startQuiz() {
-    // Hide the start button and display the first question
-    document.getElementById("start-button").style.display = "none";
-    displayQuestion();
-    startTimer();
-  }
-  
-  // Function to display a question and its options
-  function displayQuestion() {
-    const currentQuestion = quizQuestions[currentQuestionIndex];
-    const questionText = document.getElementById("question-text");
-    const answerButtons = document.getElementById("answer-buttons");
-  
-    // Clear previous question and answer options
-    questionText.innerHTML = "";
-    answerButtons.innerHTML = "";
-  
-    // Display the current question
-    questionText.innerHTML = currentQuestion.question;
-  
-    // Create answer buttons for each option
-    currentQuestion.options.forEach(option => {
-      const button = document.createElement("button");
-      button.innerText = option;
-      button.classList.add("answer-button");
-      answerButtons.appendChild(button);
-  
-      // Add click event listener to check the answer
-      button.addEventListener("click", function() {
-        checkAnswer(option);
-      });
-    });
-  }
-  
-  // Function to check the selected answer
-  function checkAnswer(selectedOption) {
-    const currentQuestion = quizQuestions[currentQuestionIndex];
-  
-    // Check if the selected answer is correct
-    if (selectedOption === currentQuestion.correctAnswer) {
-      score++;
-    }
-  
-    // Move to the next question or end the quiz if all questions are answered
-    currentQuestionIndex++;
-  
-    if (currentQuestionIndex < quizQuestions.length) {
+    ];
+
+    // Variables to track quiz state
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let timeLeft = 360;
+    let timerInterval;
+
+    // Function to start the quiz
+    function startQuiz() {
+      // Hide the start button and display the first question
+      document.getElementById("start-button").style.display = "none";
       displayQuestion();
-    } else {
-      endQuiz();
+      startTimer();
     }
-  }
-  
-  // Function to start the timer
-  function startTimer() {
-    timerInterval = setInterval(function() {
-      timeLeft--;
-  
-      // Update the timer text
-      document.getElementById("timer").textContent = timeLeft;
-  
-      // End the quiz if time runs out
-      if (timeLeft <= 0) {
+
+    // Function to display a question and its options
+    function displayQuestion() {
+      const currentQuestion = quizQuestions[currentQuestionIndex];
+      const questionText = document.getElementById("question-text");
+      const answerButtons = document.getElementById("answer-buttons");
+
+      // Clear previous question and answer options
+      questionText.innerHTML = "";
+      answerButtons.innerHTML = "";
+
+      // Display the current question
+      questionText.innerHTML = currentQuestion.question;
+
+      // Create answer buttons for each option
+      currentQuestion.options.forEach(option => {
+        const button = document.createElement("button");
+        button.innerText = option;
+        button.classList.add("answer-button");
+        answerButtons.appendChild(button);
+
+        // Add click event listener to check the answer
+        button.addEventListener("click", function () {
+          checkAnswer(option);
+        });
+      });
+    }
+
+    // Function to check the selected answer
+    function checkAnswer(selectedOption) {
+      const currentQuestion = quizQuestions[currentQuestionIndex];
+
+      // Check if the selected answer is correct
+      if (selectedOption === currentQuestion.correctAnswer) {
+        score++;
+      }
+
+      // Move to the next question or end the quiz if all questions are answered
+      currentQuestionIndex++;
+
+      if (currentQuestionIndex < quizQuestions.length) {
+        displayQuestion();
+      } else {
         endQuiz();
       }
-    }, 1000);
-  }
-  
-  // Function to end the quiz
-  function endQuiz() {
-    // Stop the timer
-    clearInterval(timerInterval);
-  
-    // Calculate the score percentage
-    const scorePercentage = (score / quizQuestions.length) * 100;
-  
-    // Display the final score
-    const questionContainer = document.getElementById("question-container");
-    questionContainer.innerHTML = `
+    }
+
+    // Function to start the timer
+    function startTimer() {
+      timerInterval = setInterval(function () {
+        timeLeft--;
+
+        // Update the timer text
+        document.getElementById("timer").textContent = timeLeft;
+
+        // End the quiz if time runs out
+        if (timeLeft <= 0) {
+          endQuiz();
+        }
+      }, 1000);
+    }
+
+    // Function to end the quiz
+    function endQuiz() {
+      // Stop the timer
+      clearInterval(timerInterval);
+
+      // Calculate the score percentage
+      const scorePercentage = (score / quizQuestions.length) * 100;
+
+      // Display the final score
+      const questionContainer = document.getElementById("question-container");
+      questionContainer.innerHTML = `
       <h2>Quiz Completed!</h2>
       <p>Your Score: ${score} out of ${quizQuestions.length}</p>
       <p>Score Percentage: ${scorePercentage}%</p>
     `;
-  }
-  
-  // Add event listener to start the quiz when the start button is clicked
-  document.getElementById("start-button").addEventListener("click", startQuiz);
+    }
+
+    // Add event listener to start the quiz when the start button is clicked
+    document.getElementById("start-button").addEventListener("click", startQuiz);
   </script>
 </body>
+
 </html>
